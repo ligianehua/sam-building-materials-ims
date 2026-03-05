@@ -133,7 +133,7 @@ export default function Dashboard() {
                 <YAxis fontSize={12} stroke="#94a3b8" />
                 <Tooltip
                   contentStyle={{ borderRadius: "8px", border: "1px solid #e2e8f0" }}
-                  formatter={(value: number) => formatCurrency(value)}
+                  formatter={(v) => formatCurrency(Number(v ?? 0))}
                 />
                 <Legend />
                 <Line type="monotone" dataKey="income" stroke="#22c55e" strokeWidth={2} name="Income" />
@@ -159,7 +159,7 @@ export default function Dashboard() {
                 <YAxis fontSize={12} stroke="#94a3b8" />
                 <Tooltip
                   contentStyle={{ borderRadius: "8px", border: "1px solid #e2e8f0" }}
-                  formatter={(value: number) => formatCurrency(value)}
+                  formatter={(v) => formatCurrency(Number(v ?? 0))}
                 />
                 <Legend />
                 <Bar dataKey="income" fill="#22c55e" radius={[4, 4, 0, 0]} name="Income" />

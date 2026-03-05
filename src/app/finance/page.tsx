@@ -80,7 +80,7 @@ export default function FinanceDashboard() {
                 <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                 <XAxis dataKey="month" fontSize={12} stroke="#94a3b8" />
                 <YAxis fontSize={12} stroke="#94a3b8" />
-                <Tooltip contentStyle={{ borderRadius: "8px", border: "1px solid #e2e8f0" }} formatter={(v: number) => formatCurrency(v)} />
+                <Tooltip contentStyle={{ borderRadius: "8px", border: "1px solid #e2e8f0" }} formatter={(v) => formatCurrency(Number(v ?? 0))} />
                 <Legend />
                 <Line type="monotone" dataKey="income" stroke="#22c55e" strokeWidth={2} name="Income" />
                 <Line type="monotone" dataKey="expense" stroke="#ef4444" strokeWidth={2} name="Expense" />
@@ -99,7 +99,7 @@ export default function FinanceDashboard() {
                 <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                 <XAxis type="number" fontSize={12} stroke="#94a3b8" />
                 <YAxis type="category" dataKey="name" fontSize={12} stroke="#94a3b8" width={80} />
-                <Tooltip contentStyle={{ borderRadius: "8px", border: "1px solid #e2e8f0" }} formatter={(v: number) => formatCurrency(v)} />
+                <Tooltip contentStyle={{ borderRadius: "8px", border: "1px solid #e2e8f0" }} formatter={(v) => formatCurrency(Number(v ?? 0))} />
                 <Bar dataKey="value" radius={[0, 4, 4, 0]} name="Amount">
                   {categoryData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
                 </Bar>
@@ -117,7 +117,7 @@ export default function FinanceDashboard() {
                 <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                 <XAxis dataKey="month" fontSize={12} stroke="#94a3b8" />
                 <YAxis fontSize={12} stroke="#94a3b8" />
-                <Tooltip contentStyle={{ borderRadius: "8px", border: "1px solid #e2e8f0" }} formatter={(v: number) => formatCurrency(v)} />
+                <Tooltip contentStyle={{ borderRadius: "8px", border: "1px solid #e2e8f0" }} formatter={(v) => formatCurrency(Number(v ?? 0))} />
                 <Area type="monotone" dataKey="net" stroke="#2563eb" fill="#2563eb" fillOpacity={0.15} strokeWidth={2} name="Net Cash Flow" />
               </AreaChart>
             </ResponsiveContainer>
@@ -135,7 +135,7 @@ export default function FinanceDashboard() {
                     <Cell fill="#3b82f6" />
                     <Cell fill="#ef4444" />
                   </Pie>
-                  <Tooltip formatter={(v: number) => formatCurrency(v)} />
+                  <Tooltip formatter={(v) => formatCurrency(Number(v ?? 0))} />
                 </PieChart>
               </ResponsiveContainer>
               <div className="flex justify-center gap-6 mt-2">
