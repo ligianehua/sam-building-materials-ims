@@ -1,0 +1,157 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==================== PRODUCTS ====================
+model Product {
+  id            String   @id @default(cuid())
+  name          String
+  brand         String   @default("")
+  category      String   @default("")
+  model         String   @default("")
+  specification String   @default("")
+  color         String   @default("")
+  unit          String   @default("piece")
+  quantity      Int      @default(0)
+  purchasePrice Float    @default(0)
+  sellingPrice  Float    @default(0)
+  lowStockAlert Int      @default(10)
+  warehouse     String   @default("")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  stockTransactions StockTransaction[]
+}
+
+// ==================== STOCK TRANSACTIONS ====================
+model StockTransaction {
+  id          String   @id @default(cuid())
+  type        String   // "IN" or "OUT"
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id])
+  quantity    Int
+  unitPrice   Float
+  totalAmount Float
+  date        DateTime @default(now())
+  note        String   @default("")
+
+  // For Stock In
+  supplierId  String?
+  supplier    Supplier? @relation(fields: [supplierId], references: [id])
+  batchNumber String    @default("")
+
+  // For Stock Out
+  customerId  String?
+  customer    Customer? @relation(fields: [customerId], references: [id])
+  orderRef    String    @default("")
+
+  createdAt   DateTime  @default(now())
+}
+
+// ==================== CUSTOMERS ====================
+model Customer {
+  id          String   @id @default(cuid())
+  company     String
+  industry    String   @default("")
+  contactName String   @default("")
+  phone       String   @default("")
+  mobile      String   @default("")
+  address     String   @default("")
+  tags        String   @default("") // JSON array stored as string
+  rating      Int      @default(3)
+  notes       String   @default("")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  stockTransactions StockTransaction[]
+  invoices          Invoice[]
+}
+
+// ==================== SUPPLIERS ====================
+model Supplier {
+  id          String   @id @default(cuid())
+  company     String
+  industry    String   @default("")
+  contactName String   @default("")
+  phone       String   @default("")
+  mobile      String   @default("")
+  address     String   @default("")
+  tags        String   @default("") // JSON array stored as string
+  rating      Int      @default(3)
+  notes       String   @default("")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  stockTransactions StockTransaction[]
+  invoices          Invoice[]
+}
+
+// ==================== FINANCIAL RECORDS ====================
+model FinancialRecord {
+  id          String   @id @default(cuid())
+  type        String   // "INCOME" or "EXPENSE"
+  category    String   // Sales, Purchase, Shipping, Rent, Salary, Other
+  amount      Float
+  description String   @default("")
+  date        DateTime @default(now())
+  relatedType String   @default("") // "STOCK_IN", "STOCK_OUT", or empty
+  relatedId   String   @default("")
+  createdAt   DateTime @default(now())
+}
+
+// ==================== INVOICES (AR/AP) ====================
+model Invoice {
+  id          String   @id @default(cuid())
+  type        String   // "RECEIVABLE" or "PAYABLE"
+  amount      Float
+  paidAmount  Float    @default(0)
+  status      String   @default("PENDING") // PENDING, PARTIAL, PAID
+  dueDate     DateTime
+  description String   @default("")
+  date        DateTime @default(now())
+
+  customerId  String?
+  customer    Customer? @relation(fields: [customerId], references: [id])
+  supplierId  String?
+  supplier    Supplier? @relation(fields: [supplierId], references: [id])
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// ==================== USERS ====================
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("STAFF") // ADMIN, MANAGER, STAFF
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  activityLogs ActivityLog[]
+}
+
+// ==================== ACTIVITY LOGS ====================
+model ActivityLog {
+  id        String   @id @default(cuid())
+  action    String   // CREATE, UPDATE, DELETE
+  module    String   // INVENTORY, CUSTOMER, SUPPLIER, FINANCE, SYSTEM
+  detail    String   @default("")
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+// ==================== SYSTEM SETTINGS ====================
+model SystemSetting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+}
