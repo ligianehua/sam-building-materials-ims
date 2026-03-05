@@ -53,7 +53,7 @@ export default function StockOutPage() {
   return (
     <div>
       <PageHeader title="Stock Out" description="Record outgoing inventory to customers" />
-      <Card className="max-w-2xl">
+      <Card className="max-w-3xl w-full">
         <form onSubmit={handleSubmit} className="space-y-5">
           <Select
             label="Product *"

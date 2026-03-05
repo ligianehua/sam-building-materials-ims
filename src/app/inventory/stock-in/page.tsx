@@ -47,7 +47,7 @@ export default function StockInPage() {
   return (
     <div>
       <PageHeader title="Stock In" description="Record incoming inventory from suppliers" />
-      <Card className="max-w-2xl">
+      <Card className="max-w-3xl w-full">
         <form onSubmit={handleSubmit} className="space-y-5">
           <Select
             label="Product *"

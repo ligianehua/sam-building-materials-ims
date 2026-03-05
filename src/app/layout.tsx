@@ -16,8 +16,8 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased">
         <Sidebar />
-        <main className="ml-60 min-h-screen">
-          <div className="p-8">{children}</div>
+        <main className="lg:ml-60 min-h-screen pt-14 lg:pt-0">
+          <div className="p-4 sm:p-6 lg:p-8 max-w-[1600px] w-full">{children}</div>
         </main>
       </body>
     </html>
